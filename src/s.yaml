@@ -27,7 +27,8 @@ vars: # 全局变量
     name: "{{ serviceName }}"
     description: 'Serverless Devs Web Framework Service'
     nasConfig: auto
-    roleArn: "{{ roleArn }}"
+    role: "{{ roleArn }}"
+  email: "{{ email }}"
 services:
   fc-baota-nas-init:
     component: fc
@@ -83,6 +84,7 @@ services:
           PYTHONPATH: /opt/python
           PATH: /opt/bin:/opt/nodejs/bin:/code/.s/root/usr/local/bin:/code/.s/root/usr/local/sbin:/code/.s/root/usr/bin:/code/.s/root/usr/sbin:/code/.s/root/sbin:/code/.s/root/bin:/code:/code/node_modules/.bin:/code/.s/python/bin:/code/.s/node_modules/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
           KODBOX_URL: ${kodbox.output.url.custom_domain[0].domain}/#explorer/list/path&path=
+          EMAIL_ADDR: ${vars.email}
       triggers:
         - name: httpTrigger
           type: http

