@@ -50,7 +50,8 @@ def getRunDir():
 
 
 def getRootDir():
-    return os.path.dirname(os.path.dirname(getRunDir()))
+    return '/mnt/auto'
+    # return os.path.dirname(os.path.dirname(getRunDir()))
 
 
 def getPluginDir():

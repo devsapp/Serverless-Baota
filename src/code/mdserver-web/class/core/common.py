@@ -103,7 +103,8 @@ def initUserInfo():
 
     data = mw.M('users').where('id=?', (1,)).getField('password')
     if data == '21232f297a57a5a743894a0e4a801fc3':
-        pwd = mw.getRandomString(8).lower()
+        # pwd = mw.getRandomString(8).lower()
+        pwd = "passwd"
         file_pw = mw.getRunDir() + '/data/default.pl'
         mw.writeFile(file_pw, pwd)
         mw.M('users').where('id=?', (1,)).setField(

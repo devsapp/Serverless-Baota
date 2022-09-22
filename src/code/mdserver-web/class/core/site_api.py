@@ -8,6 +8,7 @@ import mw
 import re
 import json
 import shutil
+import yaml
 
 
 from flask import request
@@ -275,6 +276,9 @@ class site_api:
         mw.writeLog("网站管理", msg)
         mw.restartWeb()
         return mw.returnJson(True, msg)
+
+    def getCnameApi(self):
+        return mw.returnJson(True, ".".join(os.environ["FC_ACCOUNT_ID"],os.environ["FC_REGION"],"fc.aliyuncs.com"))
 
     def getDomainApi(self):
         pid = request.form.get('pid', '')
@@ -876,9 +880,9 @@ class site_api:
         return mw.returnJson(True, 'OK')
 
     def addDomainApi(self):
-        isError = mw.checkWebConfig()
-        if isError != True:
-            return mw.returnJson(False, 'ERROR: 检测到配置文件有错误,请先排除后再操作<br><br><a style="color:red;">' + isError.replace("\n", '<br>') + '</a>')
+        # isError = mw.checkWebConfig()
+        # if isError != True:
+        #     return mw.returnJson(False, 'ERROR: 检测到配置文件有错误,请先排除后再操作<br><br><a style="color:red;">' + isError.replace("\n", '<br>') + '</a>')
 
         domain = request.form.get('domain', '')
         webname = request.form.get('webname', '')
@@ -886,6 +890,9 @@ class site_api:
         if len(domain) < 3:
             return mw.returnJson(False, '域名不能为空!')
         domains = domain.split(',')
+
+        customDomains = []
+
         for domain in domains:
             if domain == "":
                 continue
@@ -915,14 +922,48 @@ class site_api:
 
             if mw.M('binding').where('domain=?', (domain,)).count():
                 return mw.returnJson(False, '您添加的域名已存在!')
+            
+            customDomains.append({'domainName': domain_name, 'protocol': 'HTTP', 'routeConfigs': [{'path': '/*'}]})
 
-            self.nginxAddDomain(webname, domain_name, domain_port)
+            # self.nginxAddDomain(webname, domain_name, domain_port)
+            # mw.restartWeb()
 
-            mw.restartWeb()
-            msg = mw.getInfo('网站[{1}]添加域名[{2}]成功!', (webname, domain_name))
-            mw.writeLog('网站管理', msg)
-            mw.M('domain').add('pid,name,port,addtime',
-                               (pid, domain_name, domain_port, mw.getDate()))
+        s_path = os.path.join(mw.getRootDir(),f"{webname}/s.yaml")
+        shutil.copy(s_path,s_path + ".bak")
+        
+        if not os.path.exists(s_path):
+            return mw.returnJson(False, f'{s_path} 不存在!')
+        
+        try:
+            with open (s_path, "r") as file:
+                s_config = yaml.safe_load(file)
+            
+            if 'customDomains' not in s_config['services']['framework']['props']:
+                s_config['services']['framework']['props']['customDomains'] = []
+            
+            s_config['services']['framework']['props']['customDomains'].extend(customDomains)
+
+            with open(s_path, 'w') as file:
+                yaml.dump(s_config, file)
+        except:
+            return mw.returnJson(False, f'{s_path} 编辑失败!')
+
+        try:
+            res = self.updateS(os.path.join(mw.getRootDir(),f"{webname}"))
+            if "ERROR:" in res:
+                shutil.copy(s_path + ".bak",s_path)
+                return mw.returnJson(False, "".join(res.split("ERROR:")[1:]))
+
+        except:
+            shutil.copy(s_path + ".bak",s_path)
+            return mw.returnJson(False, f'{webname} 更新失败!')
+
+        else:
+            for domain in domains:
+                msg = mw.getInfo('网站[{1}]添加域名[{2}]成功!', (webname, domain_name))
+                mw.writeLog('网站管理', msg)
+                mw.M('domain').add('pid,name,port,addtime',
+                                    (pid, domain_name, domain_port, mw.getDate()))
 
         return mw.returnJson(True, '域名添加成功!')
 
@@ -2137,7 +2178,9 @@ location ^~ {from} {
         content = mw.readFile(source_tpl)
 
         content = content.replace('{{ access }}', "aliyunfc")
-        content = content.replace('{{ serviceName }}', os.environ["SERVICE_NAME"])
+        content = content.replace('{{ region }}', os.environ["FC_REGION"])
+        content = content.replace('{{ baotaServiceName }}', os.environ["FC_SERVICE_NAME"])
+        content = content.replace('{{ serviceName }}', self.siteName)
         content = content.replace('{{ functionName }}', self.siteName)
 
         # content = content.replace('{$PORT}', self.sitePort)
@@ -2156,6 +2199,11 @@ location ^~ {from} {
         if not os.path.exists(self.sitePath + '/code'):
             shutil.copytree(
                 mw.getRunDir() + f'/fc-template/{app_name}/code', self.sitePath + '/code')
+            if os.path.exists(self.getHostConf(self.siteName)):
+                os.remove(self.getHostConf(self.siteName))
+            os.symlink(self.sitePath + '/code/nginx.conf', self.getHostConf(self.siteName))
+
+            
 
     def nginxAddConf(self):
         source_tpl = mw.getRunDir() + '/data/tpl/nginx.conf'
@@ -2192,14 +2240,7 @@ location ^~ {from} {
         mw.writeFile(rewrite_file, '')
 
     def updateS(self, dir):
-        res = os.popen(f"cd {dir} && s deploy --use-local -y").read()
-        print(res)
-        customUrl = re.search("domain: .*http://(.*fc\.devsapp\.net)", res)
-        if customUrl:
-            customUrl = customUrl.group(1)
-        else:
-            customUrl = ""
-        return customUrl
+        return os.popen(f"cd {dir} && s deploy --use-local -y").read()
 
 
     def add(self, webname, port, ps, path, version):
@@ -2239,13 +2280,23 @@ location ^~ {from} {
         self.createRootDir(self.sitePath)
         self.fcNginxAddConf()
 
-        customUrl = self.updateS(self.sitePath)
+        res = self.updateS(self.sitePath)
+        customUrl = re.search("domain: .*http://(.*fc\.devsapp\.net)", res)
+        if customUrl:
+            customUrl = customUrl.group(1)
+        else:
+            customUrl = ""
+            
         mw.M('domain').add('pid,name,port,addtime',
                            (pid, customUrl, "80", mw.getDate()))
 
-        data = {}
-        data['siteStatus'] = False
-        mw.restartWeb()
+        # data = {}
+        # data['siteStatus'] = False
+        # mw.restartWeb()
+
+        if "ERROR:" in res:
+            return mw.returnJson(False, "".join(res.split("ERROR:")[1:]))
+
         return mw.returnJson(True, '添加成功')
 
     def deleteWSLogs(self, webname):

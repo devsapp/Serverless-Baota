@@ -68,4 +68,19 @@ Parameters:
       type: string
       default: baota
       description: 应用所属的函数计算服务
+    roleArn:
+      title: RAM 角色 ARN
+      type: string
+      default: ''
+      pattern: '^acs:ram::[0-9]*:role/.*$'
+      description: 应用所属的函数计算服务配置的 role, 请提前创建好对应的 role, 授信函数计算服务, 并配置好 AliyunFCFullAccess、AliyunNASFullAccess、AliyunVPCFullAccess 和 AliyunECSFullAccess policy。
+      required: true
+      x-role:
+        name: AliyunFCBaotaRole
+        service: fc
+        authorities:
+          - AliyunFCFullAccess
+          - AliyunNASFullAccess
+          - AliyunVPCFullAccess
+          - AliyunECSFullAccess
     

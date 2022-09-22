@@ -27,6 +27,7 @@ vars: # 全局变量
     name: "{{ serviceName }}"
     description: 'Serverless Devs Web Framework Service'
     nasConfig: auto
+    roleArn: "{{ roleArn }}"
 services:
   fc-baota-nas-init:
     component: fc
@@ -34,14 +35,14 @@ services:
       region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
       service: ${vars.service}
       function:
-          name: "nas-init"
-          description: 'Prepare nas'
-          codeUri: './code/nas-init'
-          runtime: python3.9
-          timeout: 300
-          memorySize: 128
-          instanceConcurrency: 1
-          handler: app.handler
+        name: "nas-init"
+        description: 'Prepare nas'
+        codeUri: './code/nas-init'
+        runtime: python3.9
+        timeout: 300
+        memorySize: 128
+        instanceConcurrency: 1
+        handler: app.handler
   fc-baota-web: # 业务名称/模块名称
     # 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：
     # 只对framework进行构建：s framework build
@@ -63,7 +64,7 @@ services:
         name: "baota"
         description: 'Serverless Devs Web Framework Function'
         layers:
-          - 9d7be146e6e8426eccac097d4ccb4eba#baota-base#1
+          - 9d7be146e6e8426eccac097d4ccb4eba#baota-base#4
         codeUri: './code/mdserver-web'
         runtime: custom
         timeout: 300
@@ -76,13 +77,12 @@ services:
             - bash
           args:
             - '-c'
-            - '/code/start.sh'
+            - '/mnt/auto/baota/start.sh'
         environmentVariables:
           NODE_PATH: /opt/nodejs/lib/node_modules:/code/node_modules:/usr/local/lib/node_modules
           PYTHONPATH: /opt/python
           PATH: /opt/bin:/opt/nodejs/bin:/code/.s/root/usr/local/bin:/code/.s/root/usr/local/sbin:/code/.s/root/usr/bin:/code/.s/root/usr/sbin:/code/.s/root/sbin:/code/.s/root/bin:/code:/code/node_modules/.bin:/code/.s/python/bin:/code/.s/node_modules/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
-          KODBOX_URL: ${fc-nas-filemgr.output.url.custom_domain[0].domain}/#explorer/list/path&path=
-          SERVICE_NAME: ${vars.service.name}
+          KODBOX_URL: ${kodbox.output.url.custom_domain[0].domain}/#explorer/list/path&path=
       triggers:
         - name: httpTrigger
           type: http
@@ -100,23 +100,23 @@ services:
           protocol: HTTP
           routeConfigs:
             - path: '/*'
-  
-  fc-nas-filemgr: # 业务名称/模块名称
-    component:  fc    # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
-    actions:          # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
-      post-deploy:  # 在deploy之前运行
+
+  kodbox: # 业务名称/模块名称
+    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
+    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
+      post-deploy: # 在deploy之前运行
         - plugin: remote-nas-config
           args:
             userId: 0
             groupId: 0
             nasDir: '/'
             fcDir: '/mnt/auto'
-        - component: fc nas upload -ro code/kodbox/kodbox /mnt/auto/kodbox  # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）
+        - component: fc nas upload -ro code/kodbox /mnt/auto/kodbox # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）
     props: # 组件的属性值
       region: ${vars.region}
       service: ${vars.service}
       function:
-        name: "nas-filemgr"
+        name: "kodbox"
         description: 'kodbox Function'
         codeUri: './code/kodbox'
         runtime: custom
@@ -129,7 +129,7 @@ services:
             - bash
           args:
             - '-c'
-            - '/code/start.sh'
+            - '/mnt/auto/kodbox/start.sh'
       triggers:
         - name: httpTrigger
           type: http
@@ -147,3 +147,4 @@ services:
           protocol: HTTP
           routeConfigs:
             - path: /*
+

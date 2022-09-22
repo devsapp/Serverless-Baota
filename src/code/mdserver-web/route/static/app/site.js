@@ -202,7 +202,9 @@ function webAddPage(type) {
 		domainlist = domainlist.substring(0, domainlist.length - 1);//子域名json
 		domain = '{"domain":"' + domain[0] + '","domainlist":[' + domainlist + '],"count":' + domain.length + '}';//拼接joson
 		var loadT = layer.msg(lan.public.the_get, { icon: 16, time: 0, shade: [0.3, "#000"] })
+		var disabled = $("#addweb").find(':input:disabled').removeAttr('disabled');
 		var data = $("#addweb").serialize() + "&port=" + webport + "&webinfo=" + domain;
+		disabled.attr('disabled', 'disabled');
 
 		$.post('/site/add', data, function (ret) {
 			if (ret.status == true) {
@@ -238,7 +240,7 @@ function webAddPage(type) {
 			shadeClose: false,
 			content: "<form class='bt-form pd20 pb70' id='addweb'>\
 						<div class='line'>\
-		                    <span class='tname'>"+ lan.site.domain + "</span>\
+		                    <span class='tname'>"+ lan.site.function_name + "</span>\
 		                    <div class='info-r c4'>\
 								<textarea id='mainDomain' class='bt-input-text' name='webname' style='width:458px;height:100px;line-height:22px' /></textarea>\
 							</div>\
@@ -252,8 +254,8 @@ function webAddPage(type) {
 	                    <div class='line'>\
 	                    <span class='tname'>根目录</span>\
 	                    <div class='info-r c4'>\
-	                    	<input id='inputPath' class='bt-input-text mr5' type='text' name='path' value='"+ www['dir'] + "/' placeholder='" + www['dir'] + "' style='width:458px' />\
-	                    	<span class='glyphicon glyphicon-folder-open cursor' onclick='changePath(\"inputPath\")'></span>\
+	                    	<input id='inputPath' class='bt-input-text mr5' type='text' name='path' value='"+ www['dir'] + "/' placeholder='" + www['dir'] + "' style='width:458px' disabled/>\
+	                    	<!--<span class='glyphicon glyphicon-folder-open cursor' onclick='changePath(\"inputPath\")'></span>-->\
 	                    </div>\
 	                    </div>\
 						"+ php_version + "\
@@ -608,6 +610,11 @@ function syncDeleteSite(dataList, successCount, errorMsg, path) {
  * @param {Int} id 网站ID
  */
 function domainEdit(id, name, msg, status) {
+	var cname_url = "";
+	$.get('/site/get_cname_url', function (cname) {
+		cname_url = cname.msg;
+	});
+
 	$.post('/site/get_domain', { pid: id }, function (domain) {
 
 		var echoHtml = "";
@@ -621,6 +628,7 @@ function domainEdit(id, name, msg, status) {
 		var bodyHtml = "<textarea id='newdomain' class='bt-input-text' style='height: 100px; width: 340px;padding:5px 10px;line-height:20px'></textarea>\
 								<input type='hidden' id='newport' value='80' />\
 								<button type='button' class='btn btn-success btn-sm pull-right' style='margin:30px 35px 0 0' onclick=\"domainAdd(" + id + ",'" + name + "',1)\">添加</button>\
+							<ul class='help-info-text c7 mtb15'><li>请提前将域名 CNAME 解析至" + cname_url + "</li></ul>\
 							<div class='divtable mtb15' style='height:350px;overflow:auto'>\
 								<table class='table table-hover' width='100%'>\
 								<thead><tr><th>"+ lan.site.domain + "</th><th width='70px'>端口</th><th width='50px' class='text-center'>操作</th></tr></thead>\
@@ -631,7 +639,7 @@ function domainEdit(id, name, msg, status) {
 		if (msg != undefined) {
 			layer.msg(msg, { icon: status ? 1 : 5 });
 		}
-		var placeholder = "<div class='placeholder c9' style='left:28px;width:330px;top:16px;'>每行填写一个域名，默认为80端口<br>泛解析添加方法 *.domain.com<br>如另加端口格式为 www.domain.com:88</div>";
+		var placeholder = "<div class='placeholder c9' style='left:28px;width:330px;top:16px;'>每行填写一个云函数名称<br>只能包含字母、数字、下划线和中划线。不能以数字、中划线开头。长度在 1-64 之间。</div>";
 		$('#newdomain').after(placeholder);
 		$(".placeholder").click(function () {
 			$(this).hide();
@@ -1029,7 +1037,7 @@ function webEdit(id, website, endTime, addtime) {
 	});
 	domainEdit(id, website);
 	//域名输入提示
-	var placeholder = "<div class='placeholder'>每行填写一个域名，默认为80端口<br>泛解析添加方法 *.domain.com<br>如另加端口格式为 www.domain.com:88</div>";
+	var placeholder = "<div class='placeholder'>每行填写一个域名，域名需要在阿里云进行接入备案</div>";
 	$('#newdomain').after(placeholder);
 	$(".placeholder").click(function () {
 		$(this).hide();
