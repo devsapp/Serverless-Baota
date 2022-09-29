@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #
 # Acme.sh DNS API plugin for Oracle Cloud Infrastructure
 # Copyright (c) 2021, Oracle and/or its affiliates

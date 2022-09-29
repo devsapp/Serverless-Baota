@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 #JD_ACCESS_KEY_ID="sdfsdfsdfljlbjkljlkjsdfoiwje"

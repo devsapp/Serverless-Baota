@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Script to use with curanet.dk, scannet.dk, wannafind.dk, dandomain.dk DNS management.
 #Requires api credentials with scope: dns

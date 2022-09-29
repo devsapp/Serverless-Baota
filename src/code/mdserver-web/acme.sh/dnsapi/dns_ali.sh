@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 Ali_API="https://alidns.aliyuncs.com/"
 

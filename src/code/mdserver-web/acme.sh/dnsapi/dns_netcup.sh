@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #developed by linux-insideDE
 
 NC_Apikey="${NC_Apikey:-$(_readaccountconf_mutable NC_Apikey)}"

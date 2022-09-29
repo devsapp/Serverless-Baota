@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #This file name is "dns_dnsservices.sh"
 #Script for Danish DNS registra and DNS hosting provider https://dns.services

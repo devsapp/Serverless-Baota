@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # If certificate already exists it will update only cert and key, not touching other parameters
 # If certificate doesn't exist it will only upload cert and key, and not set other parameters
 # Note that we deploy full chain

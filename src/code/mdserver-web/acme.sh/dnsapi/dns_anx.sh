@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Anexia CloudDNS acme.sh hook
 # Author: MA

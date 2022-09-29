@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Script for acme.sh to deploy certificates to haproxy
 #

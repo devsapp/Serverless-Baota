@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Author: Rolph Haspers <r.haspers@global.leaseweb.com>
 #Utilize leaseweb.com API to finish dns-01 verifications.

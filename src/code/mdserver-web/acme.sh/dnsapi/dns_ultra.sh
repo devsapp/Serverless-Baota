@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 # ULTRA_USR="your_user_goes_here"

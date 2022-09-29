@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #This is the Internet.BS api wrapper for acme.sh
 #

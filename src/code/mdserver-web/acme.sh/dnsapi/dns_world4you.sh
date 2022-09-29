@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # World4You - www.world4you.com
 # Lorenz Stechauner, 2020 - https://www.github.com/NerLOR

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #DEPLOY_DOCKER_CONTAINER_LABEL="xxxxxxx"
 

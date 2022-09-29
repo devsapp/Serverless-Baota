@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # Here is the script to deploy the cert to your CleverReach Account using the CleverReach REST API.
 # Your OAuth needs the right scope, please contact CleverReach support for that.
 #

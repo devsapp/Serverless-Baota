@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Script to deploy certificates to Palo Alto Networks PANOS via API
 # Note PANOS API KEY and IP address needs to be set prior to running.

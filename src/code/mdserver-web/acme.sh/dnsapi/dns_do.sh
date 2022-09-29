@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # DNS API for Domain-Offensive / Resellerinterface / Domainrobot
 

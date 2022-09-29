@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # kapper.net domain api
 # for further questions please contact: support@kapper.net

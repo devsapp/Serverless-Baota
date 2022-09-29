@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Godaddy domain api
 # Get API key and secret from https://developer.godaddy.com/

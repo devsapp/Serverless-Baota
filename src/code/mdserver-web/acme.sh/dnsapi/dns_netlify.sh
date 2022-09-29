@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #NETLIFY_ACCESS_TOKEN="xxxx"
 

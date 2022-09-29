@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Official Let's Encrypt API for do.de / Domain-Offensive
 #

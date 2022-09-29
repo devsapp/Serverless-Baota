@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Author: Wout Decre <wout@canodus.be>
 

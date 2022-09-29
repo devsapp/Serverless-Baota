@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #This file name is "dns_1984hosting.sh"
 #So, here must be a method dns_1984hosting_add()
 #Which will be called by acme.sh to add the txt record to your api system.

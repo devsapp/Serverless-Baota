@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Created by RaidenII, to use DuckDNS's API to add/remove text records
 #modified by helbgd @ 03/13/2018 to support ddnss.de

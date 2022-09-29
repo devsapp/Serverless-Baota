@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Here is a scipt to deploy the cert to your TrueNAS using the REST API.
 # https://www.truenas.com/docs/hub/additional-topics/api/rest_api.html

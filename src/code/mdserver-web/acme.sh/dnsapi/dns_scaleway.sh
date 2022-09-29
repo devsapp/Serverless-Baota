@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Scaleway API
 # https://developers.scaleway.com/en/products/domain/dns/api/

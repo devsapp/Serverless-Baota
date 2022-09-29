@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 TRANSIP_Api_Url="https://api.transip.nl/v6"
 TRANSIP_Token_Read_Only="false"
 TRANSIP_Token_Global_Key="false"

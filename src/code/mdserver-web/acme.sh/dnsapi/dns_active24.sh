@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #ACTIVE24_Token="sdfsdfsdfljlbjkljlkjsdfoiwje"
 

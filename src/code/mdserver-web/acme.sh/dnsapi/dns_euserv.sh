@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #This is the euserv.eu api wrapper for acme.sh
 #

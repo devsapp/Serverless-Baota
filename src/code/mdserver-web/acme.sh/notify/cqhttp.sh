@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Support for CQHTTP api. Push notification on CoolQ
 #CQHTTP_TOKEN="" Recommended to be not empty, QQ application token

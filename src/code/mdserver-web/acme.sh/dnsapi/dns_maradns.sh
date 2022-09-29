@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Usage: dns_maradns_add _acme-challenge.www.domain.com "token"
 dns_maradns_add() {

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 #VARIOMEDIA_API_TOKEN=000011112222333344445555666677778888

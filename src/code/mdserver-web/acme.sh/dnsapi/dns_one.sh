@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # one.com ui wrapper for acme.sh
 
 #

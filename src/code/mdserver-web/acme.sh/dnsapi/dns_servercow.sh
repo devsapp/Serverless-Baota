@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ##########
 # Custom servercow.de DNS API v1 for use with [acme.sh](https://github.com/acmesh-official/acme.sh)

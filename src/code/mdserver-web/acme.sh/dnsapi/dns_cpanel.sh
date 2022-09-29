@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #
 #Author: Bjarne Saltbaek
 #Report Bugs here: https://github.com/acmesh-official/acme.sh/issues/3732

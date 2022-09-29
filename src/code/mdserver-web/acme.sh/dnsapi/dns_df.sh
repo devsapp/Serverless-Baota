@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ########################################################################
 # https://dyndnsfree.de hook script for acme.sh

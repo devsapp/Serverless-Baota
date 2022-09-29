@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # This deploy hook is tested on OpenMediaVault 5.x. It supports both local and remote deployment.
 # The way it works is that if a cert with the matching domain name is not found, it will firstly create a dummy cert to get its uuid, and then replace it with your cert.

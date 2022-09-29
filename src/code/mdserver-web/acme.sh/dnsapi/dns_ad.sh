@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 #AD_API_KEY="sdfsdfsdfljlbjkljlkjsdfoiwje"

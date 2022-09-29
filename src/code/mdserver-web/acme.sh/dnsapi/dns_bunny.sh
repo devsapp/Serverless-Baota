@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ## Will be called by acme.sh to add the TXT record via the Bunny DNS API.
 ## returns 0 means success, otherwise error.

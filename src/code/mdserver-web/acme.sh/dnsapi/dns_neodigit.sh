@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 # NEODIGIT_API_TOKEN="jasdfhklsjadhflnhsausdfas"

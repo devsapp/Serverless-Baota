@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Support for pushover.net's api. Push notification platform for multiple platforms
 #PUSHOVER_TOKEN="" Required, pushover application token

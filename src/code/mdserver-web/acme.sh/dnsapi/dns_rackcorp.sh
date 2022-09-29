@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Provider: RackCorp (www.rackcorp.com)
 # Author: Stephen Dendtler (sdendtler@rackcorp.com)

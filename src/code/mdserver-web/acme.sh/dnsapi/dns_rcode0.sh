@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Rcode0 API Integration
 #https://my.rcodezero.at/api-doc

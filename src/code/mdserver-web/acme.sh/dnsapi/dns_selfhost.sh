@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #
 #       Author: Marvin Edeler
 #       Report Bugs here: https://github.com/Marvo2011/acme.sh/issues/1

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Here is a script to deploy cert to hashicorp consul using curl
 # (https://www.consul.io/)

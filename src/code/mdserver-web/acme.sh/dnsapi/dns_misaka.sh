@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # bug reports to support+acmesh@misaka.io
 # based on dns_nsone.sh by dev@1e.ca

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 #HETZNER_Token="sdfsdfsdfljlbjkljlkjsdfoiwje"

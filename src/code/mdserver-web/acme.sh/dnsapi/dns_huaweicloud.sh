@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # HUAWEICLOUD_Username
 # HUAWEICLOUD_Password

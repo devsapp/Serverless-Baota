@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Akamai Edge DNS v2  API
 # User must provide Open Edgegrid API credentials to the EdgeDNS installation. The remote user in EdgeDNS must have CRUD access to

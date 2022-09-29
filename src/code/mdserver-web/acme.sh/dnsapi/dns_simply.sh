@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # API-integration for Simply.com (https://www.simply.com)
 

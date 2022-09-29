@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # united-domains Reselling (https://www.ud-reselling.com/) DNS API
 # Author: Andreas Scherer (https://github.com/andischerer)

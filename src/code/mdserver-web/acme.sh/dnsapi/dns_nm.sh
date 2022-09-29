@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ########################################################################
 # https://namemaster.de hook script for acme.sh

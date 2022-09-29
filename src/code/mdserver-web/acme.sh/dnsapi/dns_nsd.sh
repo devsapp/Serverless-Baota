@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Nsd_ZoneFile="/etc/nsd/zones/example.com.zone"
 #Nsd_Command="sudo nsd-control reload"

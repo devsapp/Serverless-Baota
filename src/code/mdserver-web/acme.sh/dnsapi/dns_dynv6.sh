@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 #Author StefanAbl
 #Usage specify a private keyfile to use with dynv6 'export KEY="path/to/keyfile"'
 #or use the HTTP REST API by by specifying a token 'export DYNV6_TOKEN="value"

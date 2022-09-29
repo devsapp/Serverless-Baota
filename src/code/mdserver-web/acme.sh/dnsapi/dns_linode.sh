@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Author: Philipp Grosswiler <philipp.grosswiler@swiss-design.net>
 

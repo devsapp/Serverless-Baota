@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #DD_API_User="xxxxx"
 #DD_API_Key="xxxxxx"

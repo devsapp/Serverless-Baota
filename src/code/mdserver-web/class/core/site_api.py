@@ -53,10 +53,7 @@ class site_api:
 
         self.logsPath = mw.getRootDir() + '/wwwlogs'
         # ssl conf
-        if mw.isAppleSystem():
-            self.sslDir = self.setupPath + '/letsencrypt/'
-        else:
-            self.sslDir = '/etc/letsencrypt/live/'
+        self.sslDir = self.setupPath + '/letsencrypt/'
 
     ##### ----- start ----- ###
     def listApi(self):
@@ -421,16 +418,16 @@ class site_api:
     def getSslApi(self):
         siteName = request.form.get('siteName', '')
 
-        path = self.sslDir + siteName
+        path = self.getSiteSSLPath(siteName)
         csrpath = path + "/fullchain.pem"  # 生成证书路径
         keypath = path + "/privkey.pem"  # 密钥文件路径
         key = mw.readFile(keypath)
         csr = mw.readFile(csrpath)
 
-        file = self.getHostConf(siteName)
+        file = os.path.join(mw.getRootDir(),f"{siteName}/s.yaml")
         conf = mw.readFile(file)
 
-        keyText = 'ssl_certificate'
+        keyText = 'HTTPS'
         status = True
         stype = 0
         if(conf.find(keyText) == -1):
@@ -450,7 +447,7 @@ class site_api:
         key = request.form.get('key', '')
         csr = request.form.get('csr', '')
 
-        path = self.sslDir + siteName
+        path = self.getSiteSSLPath(siteName)
         if not os.path.exists(path):
             mw.execShell('mkdir -p ' + path)
 
@@ -470,18 +467,18 @@ class site_api:
         mw.execShell('\\cp -a ' + csrpath + ' /tmp/backup2.conf')
 
         # 清理旧的证书链
-        if os.path.exists(path + '/README'):
-            mw.execShell('rm -rf ' + path)
-            mw.execShell('rm -rf ' + path + '-00*')
-            mw.execShell('rm -rf /etc/letsencrypt/archive/' + siteName)
-            mw.execShell(
-                'rm -rf /etc/letsencrypt/archive/' + siteName + '-00*')
-            mw.execShell(
-                'rm -f /etc/letsencrypt/renewal/' + siteName + '.conf')
-            mw.execShell('rm -rf /etc/letsencrypt/renewal/' +
-                         siteName + '-00*.conf')
-            mw.execShell('rm -rf ' + path + '/README')
-            mw.execShell('mkdir -p ' + path)
+        # if os.path.exists(path + '/README'):
+        #     mw.execShell('rm -rf ' + path)
+        #     mw.execShell('rm -rf ' + path + '-00*')
+        #     mw.execShell('rm -rf /etc/letsencrypt/archive/' + siteName)
+        #     mw.execShell(
+        #         'rm -rf /etc/letsencrypt/archive/' + siteName + '-00*')
+        #     mw.execShell(
+        #         'rm -f /etc/letsencrypt/renewal/' + siteName + '.conf')
+        #     mw.execShell('rm -rf /etc/letsencrypt/renewal/' +
+        #                  siteName + '-00*.conf')
+        #     mw.execShell('rm -rf ' + path + '/README')
+        #     mw.execShell('mkdir -p ' + path)
 
         mw.writeFile(keypath, key)
         mw.writeFile(csrpath, csr)
@@ -506,7 +503,7 @@ class site_api:
         certName = request.form.get('certName', '')
         siteName = request.form.get('siteName', '')
         try:
-            path = self.sslDir + siteName
+            path = self.getSiteSSLPath(siteName)
             if not os.path.exists(path):
                 return mw.returnJson(False, '证书不存在!')
 
@@ -605,7 +602,7 @@ class site_api:
             if siteConf.find('PROXY-END') != -1:
                 return mw.returnJson(False, '检测到您的站点做了反向代理设置，请先关闭反向代理!')
 
-        letpath = self.sslDir + siteName
+        letpath = self.getSiteSSLPath(siteName)
         csrpath = letpath + "/fullchain.pem"  # 生成证书路径
         keypath = letpath + "/privkey.pem"  # 密钥文件路径
 
@@ -655,6 +652,8 @@ class site_api:
             domainsTmp.append(domainTmp)
         domains = domainsTmp
 
+        execStr += ' --server letsencrypt'
+
         domainCount = 0
         for domain in domains:
             if mw.checkIp(domain):
@@ -667,6 +666,12 @@ class site_api:
         if domainCount == 0:
             return mw.returnJson(False, '请选择域名(不包括IP地址与泛域名)!')
 
+        # print home_cert
+        cmd = 'export ACCOUNT_EMAIL=' + email + ' && ' + execStr
+        # print(domains)
+        # print(cmd)
+        result = mw.execShell(cmd)
+
         home_path = '/root/.acme.sh/' + domains[0]
         home_cert = home_path + '/fullchain.cer'
         home_key = home_path + '/' + domains[0] + '.key'
@@ -675,7 +680,7 @@ class site_api:
             home_path = '/.acme.sh/' + domains[0]
             home_cert = home_path + '/fullchain.cer'
             home_key = home_path + '/' + domains[0] + '.key'
-
+        
         if mw.isAppleSystem():
             user = mw.execShell(
                 "who | sed -n '2, 1p' |awk '{print $1}'")[0].strip()
@@ -685,17 +690,11 @@ class site_api:
                 home_cert = home_path + '/fullchain.cer'
                 home_key = home_path + '/' + domains[0] + '.key'
 
-        # print home_cert
-        cmd = 'export ACCOUNT_EMAIL=' + email + ' && ' + execStr
-        # print(domains)
-        # print(cmd)
-        result = mw.execShell(cmd)
-
         if not os.path.exists(home_cert.replace("\*", "*")):
             data = {}
             data['err'] = result
             data['out'] = result[0]
-            data['msg'] = '签发失败,我们无法验证您的域名:<p>1、检查域名是否绑定到对应站点</p>\
+            data['msg'] = f'签发失败,我们无法验证您的域名:<p>1、检查域名是否绑定到对应站点</p>\
                 <p>2、检查域名是否正确解析到本服务器,或解析还未完全生效</p>\
                 <p>3、如果您的站点设置了反向代理,或使用了CDN,请先将其关闭</p>\
                 <p>4、如果您的站点设置了301重定向,请先将其关闭</p>\
@@ -705,7 +704,7 @@ class site_api:
                 data['result'] = json.loads(
                     re.search("{.+}", result[1]).group())
                 if data['result']['status'] == 429:
-                    data['msg'] = '签发失败,您尝试申请证书的失败次数已达上限!<p>1、检查域名是否绑定到对应站点</p>\
+                    data['msg'] = f'签发失败,您尝试申请证书的失败次数已达上限!<p>1、检查域名是否绑定到对应站点</p>\
                         <p>2、检查域名是否正确解析到本服务器,或解析还未完全生效</p>\
                         <p>3、如果您的站点设置了反向代理,或使用了CDN,请先将其关闭</p>\
                         <p>4、如果您的站点设置了301重定向,请先将其关闭</p>\
@@ -727,41 +726,78 @@ class site_api:
             return mw.getJson(result)
         result['csr'] = mw.readFile(csrpath)
         result['key'] = mw.readFile(keypath)
-        mw.restartWeb()
+        self.updateS((os.path.join(mw.getRootDir(),siteName)))
+        # mw.restartWeb()
 
         return mw.returnJson(True, 'OK', result)
 
     def httpToHttpsApi(self):
         siteName = request.form.get('siteName', '')
-        file = self.getHostConf(siteName)
-        conf = mw.readFile(file)
-        if conf:
-            if conf.find('ssl_certificate') == -1:
-                return mw.returnJson(False, '当前未开启SSL')
-            to = """#error_page 404/404.html;
-    #HTTP_TO_HTTPS_START
-    if ($server_port !~ 443){
-        rewrite ^(/.*)$ https://$host$1 permanent;
-    }
-    #HTTP_TO_HTTPS_END"""
-            conf = conf.replace('#error_page 404/404.html;', to)
-            mw.writeFile(file, conf)
 
-        mw.restartWeb()
+        if not os.path.exists(os.path.join(mw.getRootDir(),f"{siteName}/ssl/fullchain.pem")):
+            return mw.returnJson(False, f'SSL 证书不存在!')
+        
+        s_path = os.path.join(mw.getRootDir(),f"{siteName}/s.yaml")
+        shutil.copy(s_path,s_path + ".bak")
+        
+        if not os.path.exists(s_path):
+            return mw.returnJson(False, f'{s_path} 不存在!')
+        
+        # try:
+        with open (s_path, "r") as file:
+            s_config = yaml.safe_load(file)
+        
+        if 'customDomains' not in s_config['services']['framework']['props']:
+            s_config['services']['framework']['props']['customDomains'] = []
+        
+        try:
+            for i in range(len(s_config['services']['framework']['props']['customDomains'])):
+                if s_config['services']['framework']['props']['customDomains'][i]["domainName"] == "auto":
+                    continue
+                if "HTTPS" in s_config['services']['framework']['props']['customDomains'][i]["protocol"]:
+                    s_config['services']['framework']['props']['customDomains'][i]["protocol"] = "HTTPS"
+
+            with open(s_path, 'w') as file:
+                yaml.dump(s_config, file)
+        except:
+            shutil.copy(s_path + ".bak",s_path)
+            return mw.returnJson(False, f'{s_path} 编辑失败!')
+        
+        self.updateS(os.path.join(mw.getRootDir(),siteName))
+
         return mw.returnJson(True, '设置成功!证书也要设置好哟!')
 
     def closeToHttpsApi(self):
         siteName = request.form.get('siteName', '')
-        file = self.getHostConf(siteName)
-        conf = mw.readFile(file)
-        if conf:
-            rep = "\n\s*#HTTP_TO_HTTPS_START(.|\n){1,300}#HTTP_TO_HTTPS_END"
-            conf = re.sub(rep, '', conf)
-            rep = "\s+if.+server_port.+\n.+\n\s+\s*}"
-            conf = re.sub(rep, '', conf)
-            mw.writeFile(file, conf)
 
-        mw.restartWeb()
+        s_path = os.path.join(mw.getRootDir(),f"{siteName}/s.yaml")
+        shutil.copy(s_path,s_path + ".bak")
+        
+        if not os.path.exists(s_path):
+            return mw.returnJson(False, f'{s_path} 不存在!')
+        
+        # try:
+        with open (s_path, "r") as file:
+            s_config = yaml.safe_load(file)
+        
+        if 'customDomains' not in s_config['services']['framework']['props']:
+            s_config['services']['framework']['props']['customDomains'] = []
+        
+        try:
+            for i in range(len(s_config['services']['framework']['props']['customDomains'])):
+                if s_config['services']['framework']['props']['customDomains'][i]["domainName"] == "auto":
+                    continue
+                if "HTTPS" in s_config['services']['framework']['props']['customDomains'][i]["protocol"]:
+                    s_config['services']['framework']['props']['customDomains'][i]["protocol"] = "HTTP,HTTPS"
+
+            with open(s_path, 'w') as file:
+                yaml.dump(s_config, file)
+        except:
+            shutil.copy(s_path + ".bak",s_path)
+            return mw.returnJson(False, f'{s_path} 编辑失败!')
+
+        self.updateS(os.path.join(mw.getRootDir(),siteName))
+        
         return mw.returnJson(True, '关闭HTTPS跳转成功!')
 
     def getIndexApi(self):
@@ -946,6 +982,7 @@ class site_api:
             with open(s_path, 'w') as file:
                 yaml.dump(s_config, file)
         except:
+            shutil.copy(s_path + ".bak",s_path)
             return mw.returnJson(False, f'{s_path} 编辑失败!')
 
         try:
@@ -1796,15 +1833,20 @@ location ^~ {from} {
         if path[-1] == '/':
             return path[0:-1]
         return path
+    
+    def getSiteSSLPath(self, siteName):
+        path = f'/mnt/auto/{siteName}/ssl'
+        os.system('mkdir -p ' + path)
+        return path
 
     def getSitePath(self, siteName):
-        file = self.getHostConf(siteName)
-        if os.path.exists(file):
-            conf = mw.readFile(file)
-            rep = '\s*root\s*(.+);'
-            path = re.search(rep, conf).groups()[0]
-            return path
-        return ''
+        # file = self.getHostConf(siteName)
+        # if os.path.exists(file):
+        #     conf = mw.readFile(file)
+        #     rep = '\s*root\s*(.+);'
+        #     path = re.search(rep, conf).groups()[0]
+        #     return path
+        return f'/mnt/auto/{siteName}/code/web'
 
     # 取当站点前运行目录
     def getSiteRunPath(self, mid):
@@ -2118,12 +2160,12 @@ location ^~ {from} {
 
     # 是否跳转到https
     def isToHttps(self, siteName):
-        file = self.getHostConf(siteName)
+        file = os.path.join(mw.getRootDir(),f"{siteName}/s.yaml")
         conf = mw.readFile(file)
         if conf:
-            if conf.find('HTTP_TO_HTTPS_START') != -1:
-                return True
-            if conf.find('$server_port !~ 443') != -1:
+            if conf.find('HTTP,HTTPS') != -1:
+                return False
+            if conf.find(' HTTPS') != -1:
                 return True
         return False
 
@@ -2305,8 +2347,8 @@ location ^~ {from} {
         confFile = self.setupPath + '/nginx/vhost/' + webname + '.conf'
         rewriteFile = self.setupPath + '/nginx/rewrite/' + webname + '.conf'
         passFile = self.setupPath + '/nginx/pass/' + webname + '.conf'
-        keyPath = self.sslDir + webname + '/privkey.pem'
-        certPath = self.sslDir + webname + '/fullchain.pem'
+        keyPath = self.getSiteSSLPath(webname) + '/privkey.pem'
+        certPath = self.getSiteSSLPath(webname) + '/fullchain.pem'
         logs = [assLogPath,
                 errLogPath,
                 confFile,
@@ -2345,44 +2387,40 @@ location ^~ {from} {
 
     # ssl相关方法 start
     def setSslConf(self, siteName):
-        file = self.getHostConf(siteName)
-        conf = mw.readFile(file)
+        s_path = os.path.join(mw.getRootDir(),f"{siteName}/s.yaml")
+        shutil.copy(s_path,s_path + ".bak")
+        
+        if not os.path.exists(s_path):
+            return mw.returnJson(False, f'{s_path} 不存在!')
+        
+        # try:
+        with open (s_path, "r") as file:
+            s_config = yaml.safe_load(file)
+        
+        if 'customDomains' not in s_config['services']['framework']['props']:
+            s_config['services']['framework']['props']['customDomains'] = []
+        
+        try:
+            for i in range(len(s_config['services']['framework']['props']['customDomains'])):
+                if s_config['services']['framework']['props']['customDomains'][i]["domainName"] == "auto":
+                    continue
+                s_config['services']['framework']['props']['customDomains'][i]["protocol"] = "HTTP,HTTPS"
+                s_config['services']['framework']['props']['customDomains'][i]["certConfig"] = {
+                    "certName": s_config['services']['framework']['props']['customDomains'][i]["domainName"].replace(".","_"),
+                    "certificate": "./ssl/fullchain.pem",
+                    "privateKey": "./ssl/privkey.pem"
+                }
 
-        keyPath = self.sslDir + siteName + '/privkey.pem'
-        certPath = self.sslDir + siteName + '/fullchain.pem'
-        if conf:
-            if conf.find('ssl_certificate') == -1:
-                sslStr = """#error_page 404/404.html;
-    ssl_certificate    %s;
-    ssl_certificate_key  %s;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-    error_page 497  https://$host$request_uri;
-""" % (certPath, keyPath)
-            if(conf.find('ssl_certificate') != -1):
-                return mw.returnData(True, 'SSL开启成功!')
+            with open(s_path, 'w') as file:
+                yaml.dump(s_config, file)
+        except:
+            shutil.copy(s_path + ".bak",s_path)
+            return mw.returnJson(False, f'{s_path} 编辑失败!')
 
-            conf = conf.replace('#error_page 404/404.html;', sslStr)
-
-            rep = "listen\s+([0-9]+)\s*[default_server]*;"
-            tmp = re.findall(rep, conf)
-            if not mw.inArray(tmp, '443'):
-                listen = re.search(rep, conf).group()
-                conf = conf.replace(
-                    listen, listen + "\n\tlisten 443 ssl http2;")
-            shutil.copyfile(file, '/tmp/backup.conf')
-
-            mw.writeFile(file, conf)
-            isError = mw.checkWebConfig()
-            if(isError != True):
-                shutil.copyfile('/tmp/backup.conf', file)
-                return mw.returnData(False, '证书错误: <br><a style="color:red;">' + isError.replace("\n", '<br>') + '</a>')
-
-        mw.restartWeb()
-        self.saveCert(keyPath, certPath)
+        keyPath = self.getSiteSSLPath(siteName) + '/privkey.pem'
+        certPath = self.getSiteSSLPath(siteName) + '/fullchain.pem'
+        
+        # self.saveCert(keyPath, certPath)
 
         msg = mw.getInfo('网站[{1}]开启SSL成功!', siteName)
         mw.writeLog('网站管理', msg)

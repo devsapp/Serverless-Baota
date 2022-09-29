@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #YC_Zone_ID="" # DNS Zone ID
 #YC_Folder_ID="" # YC Folder ID

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # dns api wrapper of lexicon for acme.sh
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Here is a api script for MyDNS.JP.
 #This file name is "dns_mydnsjp.sh"

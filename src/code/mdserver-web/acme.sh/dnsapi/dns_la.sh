@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #LA_Id="test123"
 #LA_Key="d1j2fdo4dee3948"

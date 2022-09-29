@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Here is a script to deploy cert on a Unifi Controller or Cloud Key device.
 # It supports:

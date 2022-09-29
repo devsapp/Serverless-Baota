@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 ########################################################################
 # All-inkl Kasserver hook script for acme.sh
 #

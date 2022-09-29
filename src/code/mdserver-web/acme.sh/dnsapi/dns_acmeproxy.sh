@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ## Acmeproxy DNS provider to be used with acmeproxy (http://github.com/mdbraber/acmeproxy)
 ## API integration by Maarten den Braber

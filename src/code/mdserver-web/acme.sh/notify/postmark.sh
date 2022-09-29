@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Support postmarkapp.com API (https://postmarkapp.com/developer/user-guide/sending-email/sending-with-api)
 

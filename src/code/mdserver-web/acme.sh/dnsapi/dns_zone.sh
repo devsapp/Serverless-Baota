@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Zone.ee dns API
 # https://help.zone.eu/kb/zoneid-api-v2/

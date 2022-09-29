@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # DNS API for acme.sh for Core-Networks (https://beta.api.core-networks.de/doc/).
 # created by 5ll and francis

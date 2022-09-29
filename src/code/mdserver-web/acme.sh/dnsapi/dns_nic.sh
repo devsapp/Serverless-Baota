@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #
 #NIC_ClientID='0dc0xxxxxxxxxxxxxxxxxxxxxxxxce88'

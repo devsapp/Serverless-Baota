@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Script to deploy certificates to remote server by SSH
 # Note that SSH must be able to login to remote host without a password...

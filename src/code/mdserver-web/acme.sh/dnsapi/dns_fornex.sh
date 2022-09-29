@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Author: Timur Umarov <inbox@tumarov.com>
 

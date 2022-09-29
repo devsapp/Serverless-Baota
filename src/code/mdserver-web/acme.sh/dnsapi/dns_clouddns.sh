@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # Author: Radek Sprta <sprta@vshosting.cz>
 

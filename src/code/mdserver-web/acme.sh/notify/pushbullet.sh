@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 #Support for pushbullet.com's api. Push notification, notification sync and message platform for multiple platforms
 #PUSHBULLET_TOKEN="" Required, pushbullet application token

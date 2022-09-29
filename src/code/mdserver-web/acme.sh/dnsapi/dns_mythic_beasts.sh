@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # Mythic Beasts is a long-standing UK service provider using standards-based OAuth2 authentication
 # To test: ./acme.sh --dns dns_mythic_beasts --test --debug 1 --output-insecure --issue --domain domain.com
 # Cannot retest once cert is issued

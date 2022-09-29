@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 ########
 # Custom cyon.ch DNS API for use with [acme.sh](https://github.com/acmesh-official/acme.sh)

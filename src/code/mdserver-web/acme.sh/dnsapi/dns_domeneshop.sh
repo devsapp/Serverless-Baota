@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 DOMENESHOP_Api_Endpoint="https://api.domeneshop.no/v0"
 
