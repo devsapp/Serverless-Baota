@@ -11,7 +11,7 @@ Type: Application
 Name: fc-web-panel
 Provider:
   - 阿里云
-Version: 0.0.8
+Version: 0.0.9
 Description: 快速部署一个拥有云函数原生能力的 web 管理面板
 HomePage: https://github.com/devsapp/Serverless-Baota
 Tags:
@@ -72,3 +72,8 @@ Parameters:
           - AliyunNASFullAccess
           - AliyunVPCFullAccess
           - AliyunECSFullAccess
+    adminPass:
+      title: 管理员密码
+      type: string
+      default: passwd
+      description: 应用登陆的密码，可创建后修改（管理员用户名为 admin）
