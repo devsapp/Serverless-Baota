@@ -14,7 +14,7 @@
 
 <description>
 
-fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的拥有云函数原生能力的 web 管理面板。
+> ***快速部署一个拥有云函数原生能力的 web 管理面板***
 
 </description>
 
@@ -23,9 +23,10 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 ## 前期准备
 使用该项目，推荐您拥有以下的产品权限 / 策略：
 
-| 服务/业务 | 函数计算           | 硬盘挂载            | VPC                 | 其它                |
-| --------- | ------------------ | ------------------- | ------------------- | ------------------- |
-| 权限/策略 | AliyunFCFullAccess | AliyunNASFullAccess | AliyunVPCFullAccess | AliyunECSFullAccess |
+| 服务/业务 | 函数计算 |  硬盘挂载 |  VPC |  其它 |     
+| --- |  --- |   --- |   --- |   --- |   
+| 权限/策略 | AliyunFCFullAccess |  AliyunNASFullAccess |  AliyunVPCFullAccess |  AliyunECSFullAccess |     
+
 
 </table>
 
@@ -33,7 +34,9 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 
 # 代码 & 预览
 
-- [ :smiley_cat:  源代码](https://github.com/devsapp/Serverless-Baota)
+- [:smiley_cat: 源代码](https://github.com/devsapp/Serverless-Baota)
+
+        
 
 </codepre>
 
@@ -43,7 +46,7 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 
 <appcenter>
 
--  :fire:  通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=fc-web-panel) ，
+- :fire: 通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=fc-web-panel) ，
 [![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=fc-web-panel)  该应用。 
 
 </appcenter>
@@ -70,6 +73,8 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 - [kodbox](https://github.com/kalcaddle/kodbox): 一个 NAS+OSS UI文件管理系统，详情见 [start-fc-kodbox](https://github.com/devsapp/start-fc-kodbox)
 - [acme.sh](https://acme.sh): 自动化签发免费 HTTPS 证书
 
+
+
 </appdetail>
 
 <devgroup>
@@ -81,8 +86,8 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 <p align="center">
 
 | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407298906_20211028074819117230.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407044136_20211028074404326599.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407252200_20211028074732517533.png" width="130px" > |
-| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| <center>微信公众号：`serverless`</center>                                                                                         | <center>微信小助手：`xiaojiangwh`</center>                                                                                        | <center>钉钉交流群：`33947367`</center>                                                                                           |
+|--- | --- | --- |
+| <center>微信公众号：`serverless`</center> | <center>微信小助手：`xiaojiangwh`</center> | <center>钉钉交流群：`33947367`</center> | 
 
 </p>
 

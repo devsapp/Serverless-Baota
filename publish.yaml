@@ -76,4 +76,4 @@ Parameters:
       title: 管理员密码
       type: string
       default: passwd
-      description: 应用登陆的密码，可创建后修改（管理员用户名为 admin）
+      description: 应用登陆的密码，同时用于 session 加密（管理员用户名为 admin）

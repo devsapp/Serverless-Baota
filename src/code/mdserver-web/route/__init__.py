@@ -44,8 +44,14 @@ app.config['SESSION_FILE_DIR'] = '../session'
 app.config['SESSION_FILE_THRESHOLD'] = 1024
 app.config['SESSION_FILE_MODE'] = 384
 
-# app.secret_key = uuid.UUID(int=uuid.getnode()).hex[-12:]
-app.secret_key = "123456"
+secret_key_path = os.getcwd() + "/data/secret_key.pl"
+if not os.path.exists(secret_key_path):
+    app.secret_key = uuid.UUID(int=uuid.getnode()).hex[-12:]
+    with open(secret_key_path, "w") as f:
+        f.write(app.secret_key)
+else:
+    with open(secret_key_path, "r") as f:
+        app.secret_key = f.readline()
 app.config['SESSION_PERMANENT'] = True
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_KEY_PREFIX'] = 'MW_:'
