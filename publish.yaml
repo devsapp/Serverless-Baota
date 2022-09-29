@@ -11,7 +11,7 @@ Type: Application
 Name: fc-web-panel
 Provider:
   - 阿里云
-Version: 0.0.9
+Version: 0.0.12
 Description: 快速部署一个拥有云函数原生能力的 web 管理面板
 HomePage: https://github.com/devsapp/Serverless-Baota
 Tags:

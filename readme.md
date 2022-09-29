@@ -61,10 +61,11 @@ fc-web-panel 基于多个开源项目，拥来快速部署一个类似宝塔的�
 
 本项目的希望将宝塔面板的大部分能力在云函数上实现，让使用者能一键部署面板、创建网站并签发 HTTPS 证书，体验到使用云函数的种种优势：无需固定的服务器费用，网站之间相互隔离，自动扩容等。项目仍处于 DEMO 阶段，当前已具备完整的网站创建、管理和证书签发能力。
 
-![demo](image/demo.png)
+![demo](https://i.lo-li.co/202209292236777.png)
 
 项目核心使用到的开源项目有：
 
+- [Serverless Devs](http://www.serverless-devs.com): Serverless 应用全生命周期管理工具
 - [mdserver-web](https://github.com/midoks/mdserver-web): 一款简单 Linux 面板服务，使用 BT.CN 的后台管理界面，运行环境为 Python3
 - [kodbox](https://github.com/kalcaddle/kodbox): 一个 NAS+OSS UI文件管理系统，详情见 [start-fc-kodbox](https://github.com/devsapp/start-fc-kodbox)
 - [acme.sh](https://acme.sh): 自动化签发免费 HTTPS 证书
