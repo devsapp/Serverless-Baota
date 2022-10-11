@@ -1,20 +1,20 @@
-# start-flask 帮助文档
+# fc-web-panel 帮助文档
 
 <p align="center" class="flex justify-center">
     <a href="https://www.serverless-devs.com" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-flask&type=packageType">
+    <img src="http://editor.devsapp.cn/icon?package=fc-web-panel&type=packageType">
   </a>
-  <a href="http://www.devsapp.cn/details.html?name=start-flask" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-flask&type=packageVersion">
+  <a href="http://www.devsapp.cn/details.html?name=fc-web-panel" class="ml-1">
+    <img src="http://editor.devsapp.cn/icon?package=fc-web-panel&type=packageVersion">
   </a>
-  <a href="http://www.devsapp.cn/details.html?name=start-flask" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-flask&type=packageDownload">
+  <a href="http://www.devsapp.cn/details.html?name=fc-web-panel" class="ml-1">
+    <img src="http://editor.devsapp.cn/icon?package=fc-web-panel&type=packageDownload">
   </a>
 </p>
 
 <description>
 
-Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2 。Flask使用 BSD 授权
+> ***快速部署一个拥有云函数原生能力的 web 管理面板***
 
 </description>
 
@@ -23,9 +23,10 @@ Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工�
 ## 前期准备
 使用该项目，推荐您拥有以下的产品权限 / 策略：
 
-| 服务/业务 | 函数计算 |     
-| --- |  --- |   
-| 权限/策略 | AliyunFCFullAccess |  
+| 服务/业务 | 函数计算 |  硬盘挂载 |  VPC |  其它 |     
+| --- |  --- |   --- |   --- |   --- |   
+| 权限/策略 | AliyunFCFullAccess |  AliyunNASFullAccess |  AliyunVPCFullAccess |  AliyunECSFullAccess |     
+
 
 </table>
 
@@ -33,7 +34,9 @@ Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工�
 
 # 代码 & 预览
 
-- [ :smiley_cat:  源代码](https://github.com/devsapp/start-web-framework/blob/master/web-framework/python/flask)
+- [:smiley_cat: 源代码](https://github.com/devsapp/Serverless-Baota)
+
+        
 
 </codepre>
 
@@ -43,15 +46,15 @@ Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工�
 
 <appcenter>
 
--  :fire:  通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=start-flask) ，
-[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=start-flask)  该应用。 
+- :fire: 通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=fc-web-panel) ，
+[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=fc-web-panel)  该应用。 
 
 </appcenter>
 
 - 通过 [Serverless Devs Cli](https://www.serverless-devs.com/serverless-devs/install) 进行部署：
     - [安装 Serverless Devs Cli 开发者工具](https://www.serverless-devs.com/serverless-devs/install) ，并进行[授权信息配置](https://www.serverless-devs.com/fc/config) ；
-    - 初始化项目：`s init start-flask -d start-flask`   
-    - 进入项目，并进行项目部署：`cd start-flask && s deploy -y`
+    - 初始化项目：`s init fc-web-panel -d fc-web-panel`   
+    - 进入项目，并进行项目部署：`cd fc-web-panel && s deploy -y`
 
 </deploy>
 
@@ -59,20 +62,32 @@ Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工�
 
 # 应用详情
 
+本项目的希望将宝塔面板的大部分能力在云函数上实现，让使用者能一键部署面板、创建网站并签发 HTTPS 证书，体验到使用云函数的种种优势：无需固定的服务器费用，网站之间相互隔离，自动扩容等。项目仍处于 DEMO 阶段，当前已具备完整的网站创建、管理和证书签发能力。
 
-本项目是将 Python Web 框架中，非常受欢迎的 Flask 框架，部署到阿里云 Serverless 平台（函数计算 FC）。
+![demo](https://img.alicdn.com/imgextra/i1/O1CN01AckOp31nfB3cKsA8p_!!6000000005116-0-tps-3048-1336.jpg)
 
-> Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2 。Flask使用 BSD 授权。
+一键成功部署后， 会生成两个 url， 其中:
 
-通过 Serverless Devs 开发者工具，您只需要几步，就可以体验 Serverless 架构，带来的降本提效的技术红利。
+- **宝塔面板的 url 为:**
 
-本案例应用是一个非常简单的 Hello World 案例，部署完成之后，您可以看到系统返回给您的案例地址，例如：
+  `http://baota.baota.123456789.cn-hangzhou.fc.devsapp.net`
 
-![图片alt](https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1644567788251_20220211082308412077.png)
+  账号为 admin， 密码为您部署应用时设置的密码， 默认为 passwd
 
-此时，打开案例地址，就可以看到测试的应用详情：
+- **kodbox的 url 为:**
+  
+  `http://kodbox.baota.123456789.cn-hangzhou.fc.devsapp.net`
 
-![图片alt](https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1644567807662_20220211082327817140.png)
+  账号和密码均为 admin, 在地址栏输入 `/mnt/auto` （建议添加都收藏）， 即可以实现对 web 工程目录文件管理
+
+  宝塔面板也可以上传编辑 web 目录文件， 但是能力不强，可以使用 kodbox 完成对 web 工程目录文件更好的管理
+
+项目核心使用到的开源项目有：
+
+- [Serverless Devs](http://www.serverless-devs.com): Serverless 应用全生命周期管理工具
+- [mdserver-web](https://github.com/midoks/mdserver-web): 一款简单 Linux 面板服务，使用 BT.CN 的后台管理界面，运行环境为 Python3
+- [kodbox](https://github.com/kalcaddle/kodbox): 一个 NAS+OSS UI文件管理系统，详情见 [start-fc-kodbox](https://github.com/devsapp/start-fc-kodbox)
+- [acme.sh](https://acme.sh): 自动化签发免费 HTTPS 证书
 
 
 
