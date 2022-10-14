@@ -15,7 +15,7 @@
 #   有问题快来钉钉群问一下吧：33947367
 # ------------------------------------
 edition: 1.0.0
-name: web-framework-app
+name: fc-web-panel
 # access 是当前应用所需要的密钥信息配置：
 # 密钥配置可以参考：https://www.serverless-devs.com/serverless-devs/command/config
 # 密钥使用顺序可以参考：https://www.serverless-devs.com/serverless-devs/tool#密钥使用顺序与规范
@@ -39,10 +39,56 @@ services:
         description: 'Prepare nas'
         codeUri: './code/nas-init'
         runtime: python3.9
-        timeout: 300
-        memorySize: 128
+        timeout: 1200
+        memorySize: 3072
         instanceConcurrency: 1
-        handler: app.handler
+        handler: index.handler
+  kodbox: # 业务名称/模块名称
+    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
+    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
+      pre-deploy: # 在deploy之前运行
+        - plugin: remote-nas-config
+          args:
+            userId: 0
+            groupId: 0
+            nasDir: '/'
+            fcDir: '/mnt/auto'
+        - component: fc invoke --service-name ${fc-baota-nas-init.output.service.name} --function-name nas-init
+    props: # 组件的属性值
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: "kodbox"
+        description: 'kodbox Function'
+        codeUri: './code/kodbox'
+        runtime: custom
+        timeout: 7200
+        memorySize: 3072
+        instanceConcurrency: 50
+        caPort: 80
+        customRuntimeConfig:
+          command:
+            - bash
+          args:
+            - '-c'
+            - '/code/start.sh'
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - HEAD
+              - OPTIONS
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: '/*'
   fc-baota-web: # 业务名称/模块名称
     # 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：
     # 只对framework进行构建：s framework build
@@ -56,7 +102,7 @@ services:
             groupId: 0
             nasDir: '/'
             fcDir: '/mnt/auto'
-        - component: fc nas upload -ro code/mdserver-web /mnt/auto/baota
+        - component: fc nas upload -ro code/mdserver-web/code /mnt/auto/baota
     props: # 组件的属性值
       region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
       service: ${vars.service}
@@ -70,14 +116,14 @@ services:
         timeout: 300
         memorySize: 1536
         caPort: 7200
-        instanceConcurrency: 1
+        instanceConcurrency: 16
         instanceType: e1
         customRuntimeConfig:
           command:
             - bash
           args:
             - '-c'
-            - '/mnt/auto/baota/start.sh'
+            - '/code/start.sh'
         environmentVariables:
           NODE_PATH: /opt/nodejs/lib/node_modules:/code/node_modules:/usr/local/lib/node_modules
           PYTHONPATH: /opt/python
@@ -100,52 +146,4 @@ services:
         - domainName: auto
           protocol: HTTP
           routeConfigs:
-            - path: '/*'
-
-  kodbox: # 业务名称/模块名称
-    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
-    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
-      post-deploy: # 在deploy之前运行
-        - plugin: remote-nas-config
-          args:
-            userId: 0
-            groupId: 0
-            nasDir: '/'
-            fcDir: '/mnt/auto'
-        - component: fc nas upload -ro code/kodbox /mnt/auto/kodbox # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）
-    props: # 组件的属性值
-      region: ${vars.region}
-      service: ${vars.service}
-      function:
-        name: "kodbox"
-        description: 'kodbox Function'
-        codeUri: './code/kodbox'
-        runtime: custom
-        timeout: 7200
-        memorySize: 3072
-        instanceConcurrency: 16
-        caPort: 80
-        customRuntimeConfig:
-          command:
-            - bash
-          args:
-            - '-c'
-            - '/mnt/auto/kodbox/start.sh'
-      triggers:
-        - name: httpTrigger
-          type: http
-          config:
-            authType: anonymous
-            methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - HEAD
-              - OPTIONS
-      customDomains:
-        - domainName: auto
-          protocol: HTTP
-          routeConfigs:
             - path: /*
-

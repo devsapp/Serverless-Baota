@@ -78,7 +78,7 @@
   
   `http://kodbox.baota.123456789.cn-hangzhou.fc.devsapp.net`
 
-  账号和密码均为 admin, 在地址栏输入 `/mnt/auto` （建议添加都收藏）， 即可以实现对 web 工程目录文件管理
+  账号和密码均为 admin, 在地址栏输入 `/mnt/auto` （建议添加到收藏）， 即可以实现对 web 工程目录文件管理
 
   宝塔面板也可以上传编辑 web 目录文件， 但是能力不强，可以使用 kodbox 完成对 web 工程目录文件更好的管理
 
@@ -88,6 +88,8 @@
 - [mdserver-web](https://github.com/midoks/mdserver-web): 一款简单 Linux 面板服务，使用 BT.CN 的后台管理界面，运行环境为 Python3
 - [kodbox](https://github.com/kalcaddle/kodbox): 一个 NAS+OSS UI文件管理系统，详情见 [start-fc-kodbox](https://github.com/devsapp/start-fc-kodbox)
 - [acme.sh](https://acme.sh): 自动化签发免费 HTTPS 证书
+
+
 
 
 
