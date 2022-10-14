@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
 set +e
 
-ln -s /mnt/auto/$FC_FUNCTION_NAME /wwwroot
+ln -s /mnt/auto /wwwroot
 
 mkdir -p /tmp/log/nginx/
 mkdir -p /tmp/var/nginx/
 mkdir -p /tmp/var/sessions/
 
-mkdir -p /wwwroot/sessions
-chown -R root:root /wwwroot/sessions
-
-chown -R root:root /wwwroot
+mkdir -p /wwwroot/kodbox-1.34.04/sessions
+chown -R root:root /wwwroot/kodbox-1.34.04/sessions
+chown -R root:root /wwwroot/kodbox-1.34.04
 
 echo "start php-fpm"
-php-fpm7.4 -R -c /wwwroot/php.ini -y /wwwroot/php-fpm.conf
+php-fpm7.4 -R -c /code/php.ini -y /code/php-fpm.conf
 
 echo "start nginx"
-nginx -c /wwwroot/nginx.conf
+nginx -c /code/nginx.conf
 
 sleep 5
 
@@ -26,12 +25,12 @@ do
     nginx_server=`ps aux | grep nginx | grep -v grep`
     if [ ! "$nginx_server" ]; then
         echo "restart nginx ..."
-        nginx -c /wwwroot/nginx.conf
+        nginx -c /code/nginx.conf
     fi
     php_fpm_server=`ps aux | grep php-fpm | grep -v grep`
     if [ ! "$php_fpm_server" ]; then
         echo "restart php-fpm ..."
-        php-fpm7.4 -c /wwwroot/php.ini-production -y /wwwroot/php-fpm.conf
+        php-fpm7.4 -c /code/php.ini-production -y /code/php-fpm.conf
     fi
     sleep 10
 done

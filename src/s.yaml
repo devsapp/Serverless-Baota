@@ -39,68 +39,10 @@ services:
         description: 'Prepare nas'
         codeUri: './code/nas-init'
         runtime: python3.9
-        timeout: 300
-        memorySize: 128
+        timeout: 1200
+        memorySize: 3072
         instanceConcurrency: 1
-        handler: app.handler
-  fc-baota-web: # 业务名称/模块名称
-    # 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：
-    # 只对framework进行构建：s framework build
-    # 如果不带有 framework ，而是直接执行 s build，工具则会对当前Yaml下，所有和 framework 平级的业务模块（如有其他平级的模块，例如下面注释的next-function），按照一定顺序进行 build 操作
-    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
-    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
-      pre-deploy: # 在deploy之前运行
-        - plugin: remote-nas-config
-          args:
-            userId: 0
-            groupId: 0
-            nasDir: '/'
-            fcDir: '/mnt/auto'
-        - component: fc nas upload -ro code/mdserver-web /mnt/auto/baota
-    props: # 组件的属性值
-      region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
-      service: ${vars.service}
-      function:
-        name: "baota"
-        description: 'Serverless Devs Web Framework Function'
-        layers:
-          - acs:fc:cn-hangzhou:1735961855122084:layers/baota-base/versions/4
-        codeUri: './code/mdserver-web'
-        runtime: custom
-        timeout: 300
-        memorySize: 1536
-        caPort: 7200
-        instanceConcurrency: 1
-        instanceType: e1
-        customRuntimeConfig:
-          command:
-            - bash
-          args:
-            - '-c'
-            - '/mnt/auto/baota/start.sh'
-        environmentVariables:
-          NODE_PATH: /opt/nodejs/lib/node_modules:/code/node_modules:/usr/local/lib/node_modules
-          PYTHONPATH: /opt/python
-          PATH: /opt/bin:/opt/nodejs/bin:/code/.s/root/usr/local/bin:/code/.s/root/usr/local/sbin:/code/.s/root/usr/bin:/code/.s/root/usr/sbin:/code/.s/root/sbin:/code/.s/root/bin:/code:/code/node_modules/.bin:/code/.s/python/bin:/code/.s/node_modules/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
-          KODBOX_URL: ${kodbox.output.url.custom_domain[0].domain}/#explorer/list/path&path=
-          ADMIN_PASS: "{{ adminPass }}"
-      triggers:
-        - name: httpTrigger
-          type: http
-          config:
-            authType: anonymous
-            methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - HEAD
-              - OPTIONS
-      customDomains:
-        - domainName: auto
-          protocol: HTTP
-          routeConfigs:
-            - path: '/*'
+        handler: index.handler
 
   kodbox: # 业务名称/模块名称
     component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
@@ -112,7 +54,7 @@ services:
             groupId: 0
             nasDir: '/'
             fcDir: '/mnt/auto'
-        - component: fc nas upload -ro code/kodbox /mnt/auto/kodbox # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）
+        - component: fc invoke --service-name ${fc-baota-nas-init.output.service.name} --function-name nas-init
     props: # 组件的属性值
       region: ${vars.region}
       service: ${vars.service}
@@ -149,3 +91,61 @@ services:
           routeConfigs:
             - path: /*
 
+  fc-baota-web: # 业务名称/模块名称
+    # 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：
+    # 只对framework进行构建：s framework build
+    # 如果不带有 framework ，而是直接执行 s build，工具则会对当前Yaml下，所有和 framework 平级的业务模块（如有其他平级的模块，例如下面注释的next-function），按照一定顺序进行 build 操作
+    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
+    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
+      pre-deploy: # 在deploy之前运行
+        - plugin: remote-nas-config
+          args:
+            userId: 0
+            groupId: 0
+            nasDir: '/'
+            fcDir: '/mnt/auto'
+        - component: fc nas upload -ro code/mdserver-web /mnt/auto/baota
+    props: # 组件的属性值
+      region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
+      service: ${vars.service}
+      function:
+        name: "baota"
+        description: 'Serverless Devs Web Framework Function'
+        layers:
+          - acs:fc:cn-hangzhou:1735961855122084:layers/baota-base/versions/4
+        codeUri: './code/mdserver-web'
+        runtime: custom
+        timeout: 300
+        memorySize: 1536
+        caPort: 7200
+        instanceConcurrency: 16
+        instanceType: e1
+        customRuntimeConfig:
+          command:
+            - bash
+          args:
+            - '-c'
+            - '/code/start.sh'
+        environmentVariables:
+          NODE_PATH: /opt/nodejs/lib/node_modules:/code/node_modules:/usr/local/lib/node_modules
+          PYTHONPATH: /opt/python
+          PATH: /opt/bin:/opt/nodejs/bin:/code/.s/root/usr/local/bin:/code/.s/root/usr/local/sbin:/code/.s/root/usr/bin:/code/.s/root/usr/sbin:/code/.s/root/sbin:/code/.s/root/bin:/code:/code/node_modules/.bin:/code/.s/python/bin:/code/.s/node_modules/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
+          KODBOX_URL: ${kodbox.output.url.custom_domain[0].domain}/#explorer/list/path&path=
+          ADMIN_PASS: "{{ adminPass }}"
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - HEAD
+              - OPTIONS
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: '/*'
