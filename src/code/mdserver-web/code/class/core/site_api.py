@@ -1835,7 +1835,8 @@ location ^~ {from} {
         return path
     
     def getSiteSSLPath(self, siteName):
-        path = f'/mnt/auto/{siteName}/ssl'
+        rootPath = os.environ["ROOT_PATH"]
+        path = f'{rootPath}/{siteName}/ssl'
         os.system('mkdir -p ' + path)
         return path
 
@@ -1846,7 +1847,8 @@ location ^~ {from} {
         #     rep = '\s*root\s*(.+);'
         #     path = re.search(rep, conf).groups()[0]
         #     return path
-        return f'/mnt/auto/{siteName}/code/web'
+        rootPath = os.environ["ROOT_PATH"]
+        return f'{rootPath}/{siteName}/code/web'
 
     # 取当站点前运行目录
     def getSiteRunPath(self, mid):
@@ -1880,6 +1882,9 @@ location ^~ {from} {
 
         data['dirs'] = dirnames
         return data
+    
+    def getCnameUrlApi(self):
+        return f'{os.environ["FC_ACCOUNT_ID"]}.{os.environ["FC_REGION"]}.fc.aliyuncs.com'
 
     def getHostConf(self, siteName):
         return self.vhostPath + '/' + siteName + '.conf'

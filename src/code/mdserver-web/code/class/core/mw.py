@@ -50,7 +50,7 @@ def getRunDir():
 
 
 def getRootDir():
-    return '/mnt/auto'
+    return os.environ["ROOT_PATH"]
     # return os.path.dirname(os.path.dirname(getRunDir()))
 
 

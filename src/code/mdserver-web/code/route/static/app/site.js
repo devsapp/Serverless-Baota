@@ -60,7 +60,8 @@ function getWeb(page, search, type_id) {
 					<td><a class='btlink webtips' href='javascript:;' onclick=\"webEdit(" + data.data[i].id + ",'" + data.data[i].name + "','" + data.data[i].edate + "','" + data.data[i].addtime + "')\" title='" + data.data[i].name + "'>" + shortwebname + "</td>\
 					<td>" + status + "</td>\
 					<td>" + backup + "</td>\
-					<td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"javascript:openPath('" + data.url + data.data[i].path + "');\">" + shortpath + "</a></td>\
+					<td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"javascript:openPath('" + data.data[i].path + "');\">" + shortpath + "</a></td>\
+				    <td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"" + data.url + data.data[i].path + "/code/web\" target=\"_blank\">" + shortpath + "</a></td>\
 					<td><a class='btlink setTimes' id='site_"+ data.data[i].id + "' data-ids='" + data.data[i].id + "'>" + web_end_time + "</a></td>\
 					<td><a class='btlinkbed' href='javascript:;' data-id='"+ data.data[i].id + "'>" + data.data[i].ps + "</a></td>\
 					<td style='text-align:right; color:#bbb'>\
@@ -612,7 +613,7 @@ function syncDeleteSite(dataList, successCount, errorMsg, path) {
 function domainEdit(id, name, msg, status) {
 	var cname_url = "";
 	$.get('/site/get_cname_url', function (cname) {
-		cname_url = cname.msg;
+		cname_url = cname;
 	});
 
 	$.post('/site/get_domain', { pid: id }, function (domain) {
@@ -628,7 +629,7 @@ function domainEdit(id, name, msg, status) {
 		var bodyHtml = "<textarea id='newdomain' class='bt-input-text' style='height: 100px; width: 340px;padding:5px 10px;line-height:20px'></textarea>\
 								<input type='hidden' id='newport' value='80' />\
 								<button type='button' class='btn btn-success btn-sm pull-right' style='margin:30px 35px 0 0' onclick=\"domainAdd(" + id + ",'" + name + "',1)\">添加</button>\
-							<ul class='help-info-text c7 mtb15'><li>请提前将域名 CNAME 解析至" + cname_url + "</li></ul>\
+							<ul class='help-info-text c7 mtb15'><li>请提前将域名 CNAME 解析至 " + cname_url + "</li></ul>\
 							<div class='divtable mtb15' style='height:350px;overflow:auto'>\
 								<table class='table table-hover' width='100%'>\
 								<thead><tr><th>"+ lan.site.domain + "</th><th width='70px'>端口</th><th width='50px' class='text-center'>操作</th></tr></thead>\
