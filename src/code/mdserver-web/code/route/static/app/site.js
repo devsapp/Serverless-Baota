@@ -60,7 +60,7 @@ function getWeb(page, search, type_id) {
 					<td><a class='btlink webtips' href='javascript:;' onclick=\"webEdit(" + data.data[i].id + ",'" + data.data[i].name + "','" + data.data[i].edate + "','" + data.data[i].addtime + "')\" title='" + data.data[i].name + "'>" + shortwebname + "</td>\
 					<td>" + status + "</td>\
 					<td>" + backup + "</td>\
-					<td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"javascript:openPath('" + data.data[i].path + "');\">" + shortpath + "</a></td>\
+					<td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"javascript:openPath('" + data.data[i].path + "/code/web');\">" + shortpath + "</a></td>\
 				    <td><a class='btlink' title='打开目录"+ data.data[i].path + "' href=\"" + data.url + data.data[i].path + "/code/web\" target=\"_blank\">" + shortpath + "</a></td>\
 					<td><a class='btlink setTimes' id='site_"+ data.data[i].id + "' data-ids='" + data.data[i].id + "'>" + web_end_time + "</a></td>\
 					<td><a class='btlinkbed' href='javascript:;' data-id='"+ data.data[i].id + "'>" + data.data[i].ps + "</a></td>\
